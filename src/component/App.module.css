@@ -1,8 +1,0 @@
-.back {
-    /*background-color: #13192e;*/
-    background: rgb(35,46,84);
-    background: linear-gradient(180deg, rgb(26 34 62) 20%, rgba(19,25,46,1) 84%);
-    height: 630px;
-    width: 360px;
-    position: relative;
-}
