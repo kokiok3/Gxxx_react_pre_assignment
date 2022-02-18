@@ -1,6 +1,7 @@
 import {useState, useEffect} from "react";
 import SearchStyles from "./Search.module.css";
 import { ReactComponent as SearchImg} from "../asset/Search.svg";
+import Movie from "./Movie";
 
 
 function Search(){
@@ -19,52 +20,50 @@ function Search(){
         setSearch("");
     }
     const getMovie = async ()=>{
+        setMovies([]);
         const json = await(await fetch(`https://www.omdbapi.com/?apikey=92e32667&s=${search}`)).json();
         await (console.log("HI",json.Search))
         setMovies(json.Search);
     }
-    console.log(movies);
     useEffect(()=>{
+        console.log("um", btn, search);
         if(btn == true && search != ""){
+            console.log("y", btn, search);
             getMovie();
             setBtn(false);
         }
         else{
-            console.log("no");
+            console.log("no", btn, search);
+            setBtn(false);
         }
     }, [btn]);
+    console.log("무비: ",movies);
     return (
         <div>
             <form onSubmit={onSubmit} className={`${SearchStyles.search_bar}`}>
                 <input onChange={onChange} value={search} className={`${SearchStyles.search}`} type="text" placeholder="Search"/>
                 <button onClick={onClick} className={`${SearchStyles.btn}`}><SearchImg width="24" height="24" fill="#fff" /></button>
             </form>
-            <div className={SearchStyles.content}>
-                {movies.length === 0 ?
-                    <div className={`${SearchStyles.nothing}`}>
-                        <SearchImg width="250" height="250" />
-                        <p>검색 결과가 없습니다. T . T</p>
-                    </div>
-                    :
-                    movies.map((v) => {
-                        return (
-                            <div key={v.imdbID} className={SearchStyles.li}>
-                                <div>
-                                    <img className={SearchStyles.mvImg} src={v.Poster} alt={v.Title}/>
-                                </div>
-                                <div className={SearchStyles.mvInfo}>
-                                    <span className={SearchStyles.mvFtStrong}>{v.Title}</span>
-                                    <div className={SearchStyles.mvFtSmallGroup}>
-                                        <span className={SearchStyles.mvFtSmall}>{v.Year}</span>
-                                        <span className={SearchStyles.mvFtSmall}>{v.Type}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        );
-                        // return <Movie key={v.id} id={v.id} coverImage={v.medium_cover_image} title={v.title} summary={v.summary} genres={v.genres}/>
-                    })}
-                }
-            </div>
+            {movies == [] || movies == undefined ?
+                <div className={`${SearchStyles.nothing}`}>
+                    <SearchImg width="250" height="250" />
+                    <p>검색 결과가 없습니다. T . T</p>
+                </div>
+                :
+                <div className={SearchStyles.content}>
+                    {console.log("메롱", movies)}
+                    {movies.map(v=>
+                        <Movie  key={v.imdbID}
+                            movie={movies}
+                            id={v.imdbID}
+                            img={v.Poster}
+                            title={v.Title}
+                            year={v.Year}
+                            type={v.Type}
+                        />
+                    )}
+                </div>
+            }
         </div>
     );
 }
