@@ -1,15 +1,25 @@
 import {useState, useEffect} from "react";
 import SearchStyles from "./Search.module.css";
 
-function Movie(){
-    const getMovie = async ()=>{
-        const json = await(await fetch(`https://www.omdbapi.com/?apikey=92e32667&s=${}`)).json());
-
+function Movie({movies, id, img, title, year, type}){
+    const get_img = ()=>{
+        if(img == "N/A"){
+            return {backgroundImage: `url(./no-image.png)`,}
+        }
+        else{
+            return {backgroundImage: `url(${img})`,}
+        }
     }
-    useEffect(getMovie(), []);
     return(
-        <div>
-
+        <div className={SearchStyles.li}>
+            <div className={SearchStyles.mvImg} style={get_img()}></div>
+            <div className={SearchStyles.mvInfo}>
+                <span className={SearchStyles.mvFtStrong}>{title}</span>
+                <div className={SearchStyles.mvFtSmallGroup}>
+                    <span className={SearchStyles.mvFtSmall}>{year}</span>
+                    <span className={SearchStyles.mvFtSmall}>{type}</span>
+                </div>
+            </div>
         </div>
     );
 }
