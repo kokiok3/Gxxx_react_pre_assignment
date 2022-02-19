@@ -15,6 +15,7 @@ function Search(){
     const [page, setPage] = useState(1);
     // const [loading, setLoading] = useState(false);
     const scrollToContent = useRef();
+    const movieLi = useRef();
 
     const onChange = (event)=>{
         setSearch(event.target.value);
@@ -60,17 +61,26 @@ function Search(){
         }
     }
     const [favList, setFavlist] = useState([]);
+    const doBookMark = (id, title)=>{
+        const childLen = document.getElementById(id).childElementCount;
+        if(childLen === 2){
+            addBookMark(id, title);
+        }
+        else if(childLen === 3){
+            delBookMark(id, title);
+        }
+    }
     const MySwal = withReactContent(Swal);
-    const onAlert = (id, title)=>{
+    const addBookMark = (id, title)=>{
         MySwal.fire({
             width: 400,
             padding: '1rem',
             title: <p className={SearchStyles.swalTitle}>즐겨찾기에 추가하시겠습니까?</p>,
             showCancelButton: true,
             confirmButtonText: "네 :)",
-            confirmButtonAriaLabel: "즐겨찾기 추가하기",
-            cancelButtonText: "취소 T . T",
-            cancelButtonAriaLabel: "즐겨찾기 취소하기",
+            confirmButtonAriaLabel: "즐겨찾기에서 추가하기",
+            cancelButtonText: "취소",
+            cancelButtonAriaLabel: "즐겨찾기 추가 취소하기",
             confirmButtonColor: "#3085d6",
         }).then((result)=>{
             if (result.isConfirmed) {
@@ -78,8 +88,32 @@ function Search(){
                     Id: id,
                     Title: title,
                 }
-                // setFavlist([favObj, ...favList])
                 favList != null ? setFavlist([favObj, ...favList]) : setFavlist([favObj]);
+            }
+        })
+    }
+    const delBookMark = (id, title)=>{
+        MySwal.fire({
+            width: 400,
+            padding: '1rem',
+            title: <p className={SearchStyles.swalTitle}>즐겨찾기에서 삭제하시겠습니까?</p>,
+            showCancelButton: true,
+            confirmButtonText: "네 T . T",
+            confirmButtonAriaLabel: "즐겨찾기에서 삭제하기",
+            cancelButtonText: "취소",
+            cancelButtonAriaLabel: "즐겨찾기 삭제 취소하기",
+            confirmButtonColor: "#d33",
+        }).then((result)=>{
+            if (result.isConfirmed) {
+                const favObj = {
+                    Id: id,
+                    Title: title,
+                }
+                const rmFavList = favList.filter((v)=>{
+                    return v.Id !== id;
+                    console.log(v.Id, id);
+                });
+                setFavlist(rmFavList);
             }
         })
     }
@@ -105,7 +139,7 @@ function Search(){
                 <div ref={scrollToContent} className={SearchStyles.content}>
                     {movies.map(v=> {
                         return(
-                        <div onClick={()=>onAlert(v.imdbID, v.Title)} key={v.imdbID} className={SearchStyles.li}>
+                        <div id={v.imdbID} onClick={()=>doBookMark(v.imdbID, v.Title)} key={v.imdbID} className={SearchStyles.li}>
                             <div className={SearchStyles.mvImg} style={get_img(v.Poster)}></div>
                             <div className={SearchStyles.mvInfo}>
                                 <span className={SearchStyles.mvFtStrong}>{v.Title}</span>
@@ -114,18 +148,18 @@ function Search(){
                                     <span className={SearchStyles.mvFtSmall}>{v.Type}</span>
                                 </div>
                             </div>
-                            <div>
-                                {favList != null ?
-                                    (favList.map((favListVal)=>{
-                                        return((favListVal.Id == v.imdbID)?
-                                            <BookmarkColoredImg key={`${favListVal.Id}`} className={SearchStyles.bookMark} width='45' height='45' fill='#008aff' />
-                                            :
-                                            null)
-                                    }))
-                                    :
-                                    null
-                                }
-                            </div>
+                            {favList != null ?
+                                (favList.map((favListVal)=>{
+                                    return((favListVal.Id == v.imdbID)?
+                                        <div key={`${favListVal.Id}`}>
+                                            <BookmarkColoredImg className={SearchStyles.bookMark} width='45' height='45' fill='#008aff' />
+                                        </div>
+                                        :
+                                        null)
+                                }))
+                                :
+                                null
+                            }
                         </div>)
                     })}
                     {movies == undefined || movies.length == 0 || totalPages < 11 ?
