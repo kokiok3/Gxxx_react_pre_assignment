@@ -1,7 +1,9 @@
 import {useState, useEffect} from "react";
 import SearchStyles from "./Search.module.css";
 import { ReactComponent as SearchImg} from "../asset/Search.svg";
-import Movie from "./Movie";
+// import Movie from "./Movie";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 
 function Search(){
@@ -32,6 +34,57 @@ function Search(){
             setBtn(false);
         }
     }, [btn]);
+
+    const get_img = (Poster)=>{
+        if(Poster == "N/A"){
+            return {backgroundImage: `url(./no-image.png)`,}
+        }
+        else{
+            return {backgroundImage: `url(${Poster})`,}
+        }
+    }
+    const [favList, setFavlist] = useState([]);
+    // const getFavList = ()=>{
+    //     if(localStorage.getItem("Favorite") == null){
+    //         console.log(1, localStorage.getItem("Favorite"))
+    //     }
+    //     else{
+    //         console.log(2, localStorage.getItem("Favorite"))
+    //         // return localStorage.getItem("Favorite");
+    //     }
+    // }
+    // useEffect(getFavList, []);
+
+    const MySwal = withReactContent(Swal);
+    const onAlert = ()=>{
+        MySwal.fire({
+            width: 400,
+            padding: '1rem',
+            title: <p className={SearchStyles.swalTitle}>즐겨찾기에 추가하시겠습니까?</p>,
+            showCancelButton: true,
+            confirmButtonText: "네 :)",
+            confirmButtonAriaLabel: "즐겨찾기 추가하기",
+            cancelButtonText: "취소 T . T",
+            cancelButtonAriaLabel: "즐겨찾기 취소하기",
+            confirmButtonColor: "#3085d6",
+        }).then((result)=>{
+            if (result.isConfirmed) {
+                const favObj = {
+                    Id: "id",
+                    Title: "title",
+                }
+                setFavlist([favObj, ...favList]);
+            }
+        })
+    }
+    const saveLocal = ()=>{
+        if(favList != null){
+            // console.log("hi", favList);
+            localStorage.setItem("Favorite", JSON.stringify(favList));
+        }
+    }
+    useEffect(saveLocal, [favList]);
+
     return (
         <div>
             <form onSubmit={onSubmit} className={`${SearchStyles.search_bar}`}>
@@ -45,16 +98,19 @@ function Search(){
                 </div>
                 :
                 <div className={SearchStyles.content}>
-                    {movies.map(v=>
-                        <Movie  key={v.imdbID}
-                            movie={movies}
-                            id={v.imdbID}
-                            img={v.Poster}
-                            title={v.Title}
-                            year={v.Year}
-                            type={v.Type}
-                        />
-                    )}
+                    {movies.map(v=> {
+                        return(
+                        <div onClick={onAlert} key={v.imdbID} className={SearchStyles.li}>
+                            <div className={SearchStyles.mvImg} style={get_img(v.Poster)}></div>
+                            <div className={SearchStyles.mvInfo}>
+                                <span className={SearchStyles.mvFtStrong}>{v.Title}</span>
+                                <div className={SearchStyles.mvFtSmallGroup}>
+                                    <span className={SearchStyles.mvFtSmall}>{v.Year}</span>
+                                    <span className={SearchStyles.mvFtSmall}>{v.Type}</span>
+                                </div>
+                            </div>
+                        </div>)
+                    })}
                 </div>
             }
         </div>
