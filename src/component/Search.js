@@ -1,7 +1,7 @@
-import {useState, useEffect} from "react";
+import {useState, useEffect, useRef} from "react";
 import SearchStyles from "./Search.module.css";
 import { ReactComponent as SearchImg} from "../asset/Search.svg";
-// import Movie from "./Movie";
+import { ReactComponent as BookmarkColoredImg} from "../asset/Bookmark_colored.svg";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
@@ -29,6 +29,9 @@ function Search(){
         if(btn == true && search != ""){
             getMovie();
             setBtn(false);
+            const getFav = localStorage.getItem("Favorite");
+            setFavlist(JSON.parse(getFav));
+            // console.log("getFav", JSON.parse(getFav));
         }
         else{
             setBtn(false);
@@ -44,7 +47,6 @@ function Search(){
         }
     }
     const [favList, setFavlist] = useState([]);
-
     const MySwal = withReactContent(Swal);
     const onAlert = (id, title)=>{
         MySwal.fire({
@@ -63,13 +65,13 @@ function Search(){
                     Id: id,
                     Title: title,
                 }
-                setFavlist([favObj, ...favList]);
+                // setFavlist([favObj, ...favList])
+                favList != null ? setFavlist([favObj, ...favList]) : setFavlist([favObj]);
             }
         })
     }
-    const saveLocal = ()=>{
-        if(favList != null){
-            // console.log("hi", favList);
+    const saveLocal = (id)=>{
+        if(favList != null && favList.length != 0){
             localStorage.setItem("Favorite", JSON.stringify(favList));
         }
     }
@@ -98,6 +100,18 @@ function Search(){
                                     <span className={SearchStyles.mvFtSmall}>{v.Year}</span>
                                     <span className={SearchStyles.mvFtSmall}>{v.Type}</span>
                                 </div>
+                            </div>
+                            <div>
+                                {favList != null ?
+                                    (favList.map((favListVal)=>{
+                                        return((favListVal.Id == v.imdbID)?
+                                            <BookmarkColoredImg key={`${favListVal.Id}`} className={SearchStyles.bookMark} width='45' height='45' fill='#008aff' />
+                                            :
+                                            null)
+                                    }))
+                                    :
+                                    null
+                                }
                             </div>
                         </div>)
                     })}
