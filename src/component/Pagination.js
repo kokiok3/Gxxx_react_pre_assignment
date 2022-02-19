@@ -2,9 +2,7 @@ import Pagination from "react-js-pagination";
 import {useState, useEffect, useRef} from "react";
 import "./Pagination.css";
 
-const Paging = ({totalResults})=>{
-    const [page, setPage] = useState(1);
-    const handlePageChange = (page)=>setPage(page);
+const Paging = ({page, totalResults, handlePageChange})=>{
     return (
         <div>
             <Pagination
