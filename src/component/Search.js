@@ -4,12 +4,14 @@ import { ReactComponent as SearchImg} from "../asset/Search.svg";
 import { ReactComponent as BookmarkColoredImg} from "../asset/Bookmark_colored.svg";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import Paging from "./Pagination"
 
 
 function Search(){
     const [search, setSearch] = useState("");
     const [btn, setBtn] = useState(false);
     const [movies, setMovies] = useState([]);
+    const [totalPages, setTotalPages] = useState(0);
     const onChange = (event)=>{
         setSearch(event.target.value);
     }
@@ -24,6 +26,8 @@ function Search(){
         setMovies([]);
         const json = await(await fetch(`https://www.omdbapi.com/?apikey=92e32667&s=${search}`)).json();
         setMovies(json.Search);
+        setTotalPages(json.totalResults);
+        console.log(1,json.totalResults);
     }
     useEffect(()=>{
         if(btn == true && search != ""){
@@ -115,6 +119,11 @@ function Search(){
                             </div>
                         </div>)
                     })}
+                    {movies == undefined || movies.length == 0 || totalPages < 11 ?
+                        null
+                        :
+                        <Paging totalResults={totalPages}/>
+                    }
                 </div>
             }
         </div>
