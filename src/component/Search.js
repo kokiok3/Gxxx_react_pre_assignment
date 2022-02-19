@@ -44,19 +44,9 @@ function Search(){
         }
     }
     const [favList, setFavlist] = useState([]);
-    // const getFavList = ()=>{
-    //     if(localStorage.getItem("Favorite") == null){
-    //         console.log(1, localStorage.getItem("Favorite"))
-    //     }
-    //     else{
-    //         console.log(2, localStorage.getItem("Favorite"))
-    //         // return localStorage.getItem("Favorite");
-    //     }
-    // }
-    // useEffect(getFavList, []);
 
     const MySwal = withReactContent(Swal);
-    const onAlert = ()=>{
+    const onAlert = (id, title)=>{
         MySwal.fire({
             width: 400,
             padding: '1rem',
@@ -70,8 +60,8 @@ function Search(){
         }).then((result)=>{
             if (result.isConfirmed) {
                 const favObj = {
-                    Id: "id",
-                    Title: "title",
+                    Id: id,
+                    Title: title,
                 }
                 setFavlist([favObj, ...favList]);
             }
@@ -100,7 +90,7 @@ function Search(){
                 <div className={SearchStyles.content}>
                     {movies.map(v=> {
                         return(
-                        <div onClick={onAlert} key={v.imdbID} className={SearchStyles.li}>
+                        <div onClick={()=>onAlert(v.imdbID, v.Title)} key={v.imdbID} className={SearchStyles.li}>
                             <div className={SearchStyles.mvImg} style={get_img(v.Poster)}></div>
                             <div className={SearchStyles.mvInfo}>
                                 <span className={SearchStyles.mvFtStrong}>{v.Title}</span>
