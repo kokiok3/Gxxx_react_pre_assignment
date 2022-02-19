@@ -6,16 +6,21 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import Paging from "./Pagination"
 
-
 function Search(){
     const [search, setSearch] = useState("");
+    const [searchTemp, setSearchTemp] = useState("");
     const [btn, setBtn] = useState(false);
     const [movies, setMovies] = useState([]);
     const [totalPages, setTotalPages] = useState(0);
+    const [page, setPage] = useState(1);
+    // const [loading, setLoading] = useState(false);
+    const scrollToContent = useRef();
+
     const onChange = (event)=>{
         setSearch(event.target.value);
     }
     const onClick = ()=>{
+        setSearchTemp(search);
         setBtn(true);
     }
     const onSubmit = (event)=>{
@@ -24,10 +29,13 @@ function Search(){
     }
     const getMovie = async ()=>{
         setMovies([]);
-        const json = await(await fetch(`https://www.omdbapi.com/?apikey=92e32667&s=${search}`)).json();
+        const json = await(await fetch(`https://www.omdbapi.com/?apikey=92e32667&s=${searchTemp}&page=${page}`)).json();
         setMovies(json.Search);
-        setTotalPages(json.totalResults);
-        console.log(1,json.totalResults);
+        setTotalPages(parseInt(json.totalResults));
+    }
+    const handlePageChange = (page)=> {
+        setPage(page);
+        scrollToContent.current.scrollTop = 0;
     }
     useEffect(()=>{
         if(btn == true && search != ""){
@@ -41,6 +49,7 @@ function Search(){
             setBtn(false);
         }
     }, [btn]);
+    useEffect(getMovie, [page]);
 
     const get_img = (Poster)=>{
         if(Poster == "N/A"){
@@ -93,7 +102,7 @@ function Search(){
                     <p>검색 결과가 없습니다. T . T</p>
                 </div>
                 :
-                <div className={SearchStyles.content}>
+                <div ref={scrollToContent} className={SearchStyles.content}>
                     {movies.map(v=> {
                         return(
                         <div onClick={()=>onAlert(v.imdbID, v.Title)} key={v.imdbID} className={SearchStyles.li}>
@@ -122,7 +131,7 @@ function Search(){
                     {movies == undefined || movies.length == 0 || totalPages < 11 ?
                         null
                         :
-                        <Paging totalResults={totalPages}/>
+                        <Paging page={page} totalResults={totalPages} handlePageChange={handlePageChange}/>
                     }
                 </div>
             }
