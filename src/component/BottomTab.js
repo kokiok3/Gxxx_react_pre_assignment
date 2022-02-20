@@ -28,7 +28,10 @@ function BottomTab(){
     ];
 
     const tabClickHandler=(index)=>{
-        setActiveIndex(index)
+        const resultUrl = index === 0 ? "home" : "favorite";
+        window.history.pushState(null, null, `#/${resultUrl}`);
+        setActiveIndex(index);
+
     }
 
     return (
@@ -36,7 +39,12 @@ function BottomTab(){
             <ul className={`${BtmStyles.tab}`}>
                 {tabArr.map((section, index)=>{
                     return (
-                        <li key={index} onClick={()=>tabClickHandler(index)} className={activeIndex === index ? BtmStyles.btnActive : ""}>
+                        <li key={index} onClick={()=> {
+                            tabClickHandler(index);
+                            if(index === 0){
+                                window.location.replace("/");
+                            }
+                        }} className={activeIndex === index ? BtmStyles.btnActive : ""}>
                             {section.tabTitle}
                         </li>)
                 })}
@@ -45,11 +53,6 @@ function BottomTab(){
                 {tabArr[activeIndex].tabCont}
             </div>
         </div>
-        // <div className={`${BtmStyles.tab}`}>
-        //     {/*<Link to={"/"} className={`${BtmStyles.btn}`}><SearchImg width="40" height="40" fill="#fff" /></Link>*/}
-        //     <button className={`${BtmStyles.btn}`}><SearchImg width="40" height="40" fill="#fff" /></button>
-        //     <button className={`${BtmStyles.btn}`}><BookmarkImg width="38" height="38" fill="#fff" /></button>
-        // </div>
     );
 }
 
