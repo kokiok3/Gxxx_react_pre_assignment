@@ -18,6 +18,7 @@ function Search(){
     const [totalPages, setTotalPages] = useState(0);
     const [page, setPage] = useState(1);
     const scrollToContent = useRef();
+    const scrollWhenClick = useRef();
     const movieLi = useRef();
 
     const onChange = (event)=>{
@@ -30,6 +31,8 @@ function Search(){
     }
     const onSubmit = (event)=>{
         event.preventDefault();
+        // console.log(scrollWhenClick.current.parentElement.parentElement);
+        // scrollWhenClick.current.scrollTop = 0;
         setSearch("");
         setPage(1);
     }
@@ -82,7 +85,7 @@ function Search(){
         MySwal.fire({
             width: 400,
             padding: '1rem',
-            title: <p className={SearchStyles.swalTitle}>즐겨찾기에 추가하시겠습니까?</p>,
+            title: <p className={MovieListStyles.swalTitle}>즐겨찾기에 추가하시겠습니까?</p>,
             showCancelButton: true,
             confirmButtonText: "네 :)",
             confirmButtonAriaLabel: "즐겨찾기에서 추가하기",
@@ -106,7 +109,7 @@ function Search(){
         MySwal.fire({
             width: 400,
             padding: '1rem',
-            title: <p className={SearchStyles.swalTitle}>즐겨찾기에서 삭제하시겠습니까?</p>,
+            title: <p className={MovieListStyles.swalTitle}>즐겨찾기에서 삭제하시겠습니까?</p>,
             showCancelButton: true,
             confirmButtonText: "네 T . T",
             confirmButtonAriaLabel: "즐겨찾기에서 삭제하기",
@@ -142,7 +145,7 @@ function Search(){
     return (
         <div>
             <form onSubmit={onSubmit} className={`${SearchStyles.search_bar}`}>
-                <input onChange={onChange} value={search} className={`${SearchStyles.search}`} type="text" placeholder="Search"/>
+                <input ref={scrollWhenClick} onChange={onChange} value={search} className={`${SearchStyles.search}`} type="text" placeholder="Search"/>
                 <button onClick={onClick} className={`${SearchStyles.btn}`}><SearchImg width="24" height="24" fill="#fff" /></button>
             </form>
             {movies == undefined || movies.length == 0 ?
@@ -151,8 +154,8 @@ function Search(){
                     <p>검색 결과가 없어요. T . T</p>
                 </div>
                 :
-                <div ref={scrollToContent} className={SearchStyles.content}>
-                    {movies.map(v=> {
+                <div id="searchContent" ref={scrollToContent} className={SearchStyles.content}>
+                    {movies.map((v, i)=> {
                         return(
                         <div id={v.imdbID} onClick={()=>doBookMark(v.imdbID, v.Title, v.Year, v.Type, v.Poster)} key={v.imdbID} className={MovieListStyles.li}>
                             <div className={MovieListStyles.mvImg} style={get_img(v.Poster)}></div>
