@@ -14,7 +14,7 @@
 - 2022.02.18 - 20 : 웹 페이지 제작
 <br>
 
-### 🎁사용한 오픈소스
+### 🎁 사용한 오픈소스
 #### sweetalert2 
 즐겨찾기 추가 및 취소 시 alert 창  
 [https://sweetalert2.github.io/#examples](https://sweetalert2.github.io/#examples)  
@@ -22,15 +22,20 @@
 페이지 간 이동  
 <br>
 
-### ➕콘솔에 추가해야할 것들
+### ➕ 콘솔에 추가해야할 것들
 npx create-react-app  
 npm install react-router-dom  
 npm install --save sweetalert2 sweetalert2-react-content  
 npm i react-js-pagination  
 <br>
 
-### 📜실시간 작업 목록
-- [ ] github test clone 
+### ➕ git clone 주소 및 시작
+- git clone https://[사용자이름]:[토큰]@github.com/kokiok3/Grip_React_JeongSohyun.git  
+- npm start
+<br>
+
+### 📜 실시간 작업 목록
+- [x] github test clone 
 - [x] favicon 적용
 - [x] 폰트 적용
 - [x] 즐겨찾기에서 로컬 스토리지 값 불러오기
