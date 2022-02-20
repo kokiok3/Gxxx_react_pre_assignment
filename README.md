@@ -36,7 +36,7 @@ npm i react-js-pagination
 - npm start
 <br>
 
-### 📜 실시간 작업 목록
+### 📜 실시간 작업 목록(최신순)
 - [x] github test clone 
 - [x] favicon 적용
 - [x] 폰트 적용
