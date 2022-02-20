@@ -4,6 +4,7 @@
     /*top: 0px;*/
     padding: 15px;
     color: #fff;
+    font-size: 26px;
 }
 .content {
     position: absolute;
@@ -12,4 +13,18 @@
     height: 491px;
     overflow-y: auto;
     color: #fff;
+}
+.nothing {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin: auto;
+    fill: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.5);
+    position: absolute;
+    top: 133px;
+}
+.nothing > *:first-child {
+    margin-bottom: 20px;
 }

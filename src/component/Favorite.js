@@ -5,7 +5,7 @@ import MovieListStyles from "./MovieList.module.css";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { ReactComponent as BookmarkColoredImg} from "../asset/Bookmark_colored.svg";
-
+import { ReactComponent as MovieImg} from "../asset/Movie.svg";
 
 function Favorite(){
     const [favList, setFavlist] = useState(JSON.parse(localStorage.getItem("Favorite")));
@@ -45,19 +45,28 @@ function Favorite(){
                 });
                 console.log(rmFavList);
                 setFavlist(rmFavList);
-                localStorage.setItem("Favorite", JSON.stringify(favList));
+                // localStorage.setItem("Favorite", JSON.stringify(favList));
                 if(rmFavList.length === 0){
                     localStorage.removeItem("Favorite");
                 }
             }
         })
     }
+    const saveLocal = ()=>{
+        if(favList != null && favList.length != 0){
+            localStorage.setItem("Favorite", JSON.stringify(favList));
+        }
+    }
+    useEffect(saveLocal, [favList]);
     return(
         <div>
             <div className={FavStyles.title}>내 즐겨찾기</div>
             <div className={FavStyles.content}>
                 {favList == undefined || favList.length == 0 ?
-                    null
+                    <div className={`${FavStyles.nothing}`}>
+                        <MovieImg width="150" height="150" />
+                        <p>저장한 영화 목록이 없어요.</p>
+                    </div>
                     :
                     favList.map((val, index)=>{
                         return(
