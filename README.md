@@ -1,6 +1,8 @@
 # Grip_React_JeongSohyun
+### 후다🐔 보는 웹사이트
+![그립사전과제17초짤](https://user-images.githubusercontent.com/84312457/154858169-89f61c95-7419-4eb4-bb7f-5df350275f2c.gif)
 
-### 🗨 소개
+### 💬 소개
 **영화 검색과 즐겨찾기가 가능한 웹사이트입니다.**  
 화면은 모바일형으로 제작했습니다.  
 사전과제를 위해 React를 처음 다뤄봤습니다.  
