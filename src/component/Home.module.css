@@ -1,8 +1,23 @@
+@font-face {
+    font-family: "minSans";
+    src: url("../../public/minSans/ttf/MinSans-Bold.ttf");
+    src: url("../../public/minSans/ttf/MinSans-Light.ttf");
+    src: url("../../public/minSans/ttf/MinSans-Regular.ttf");
+    rc: url("../../public/minSans/otf/MinSans-Bold.otf");
+    src: url("../../public/minSans/otf/MinSans-Light.otf");
+    src: url("../../public/minSans/otf/MinSans-Regular.otf");
+}
+html, body {
+    font-family: "minSans";
+    margin: 0;
+    padding: 0;
+}
 .back {
-    /*background-color: #13192e;*/
+    height: calc(100vh - 20px);
     background: rgb(35,46,84);
     background: linear-gradient(180deg, rgb(26 34 62) 20%, rgba(19,25,46,1) 84%);
-    height: 630px;
+    /*height: 630px;*/
     width: 360px;
+    margin: 10px auto;
     position: relative;
 }
