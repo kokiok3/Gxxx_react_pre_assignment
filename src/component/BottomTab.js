@@ -4,6 +4,7 @@ import BtmStyles from "./BottomTab.module.css";
 import { ReactComponent as SearchImg} from "../asset/Search.svg";
 import { ReactComponent as BookmarkImg} from "../asset/Bookmark.svg";
 import Search from "./Search";
+import Favorite from "./Favorite"
 
 function BottomTab(){
     const [activeIndex, setActiveIndex] = useState(0);
@@ -22,7 +23,7 @@ function BottomTab(){
                 <BookmarkImg width="38" height="38" fill="#ffffff80" />
             ),
             tabCont:(
-                <div> 즐겨찾기 </div>
+                <div> <Favorite /> </div>
             )
         }
     ];
