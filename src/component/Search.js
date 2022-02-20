@@ -14,7 +14,6 @@ function Search(){
     const [movies, setMovies] = useState([]);
     const [totalPages, setTotalPages] = useState(0);
     const [page, setPage] = useState(1);
-    // const [loading, setLoading] = useState(false);
     const scrollToContent = useRef();
     const movieLi = useRef();
 
@@ -22,7 +21,7 @@ function Search(){
         setSearch(event.target.value);
     }
     const onClick = ()=>{
-        window.history.pushState(null, null, `#/${search}`);
+        window.history.pushState(null, null, `#/s=${search}&page=1`);
         setSearchTemp(search);
         setBtn(true);
     }
@@ -38,6 +37,7 @@ function Search(){
     }
     const handlePageChange = (page)=> {
         setPage(page);
+        window.history.pushState(null, null, `#/s=${search}&page=${page}`);
         scrollToContent.current.scrollTop = 0;
     }
     useEffect(()=>{
@@ -125,7 +125,6 @@ function Search(){
         }
     }
     useEffect(saveLocal, [favList]);
-
     return (
         <div>
             <form onSubmit={onSubmit} className={`${SearchStyles.search_bar}`}>
