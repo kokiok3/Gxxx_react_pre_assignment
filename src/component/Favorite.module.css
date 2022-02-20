@@ -1,0 +1,15 @@
+.title {
+    width: calc(100% - 30px);
+    /*position: absolute;*/
+    /*top: 0px;*/
+    padding: 15px;
+    color: #fff;
+}
+.content {
+    position: absolute;
+    top: 62px;
+    width: 100%;
+    height: 491px;
+    overflow-y: auto;
+    color: #fff;
+}
