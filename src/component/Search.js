@@ -4,6 +4,7 @@ import SearchStyles from "./Search.module.css";
 import ScrollStyles from "./Scroll.module.css";
 import MovieListStyles from "./MovieList.module.css";
 import { ReactComponent as SearchImg} from "../asset/Search.svg";
+import { ReactComponent as SearchImgTwo} from "../asset/SearchImgTwo.svg";
 import { ReactComponent as BookmarkColoredImg} from "../asset/Bookmark_colored.svg";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -146,8 +147,8 @@ function Search(){
             </form>
             {movies == undefined || movies.length == 0 ?
                 <div className={`${SearchStyles.nothing}`}>
-                    <SearchImg width="250" height="250" />
-                    <p>검색 결과가 없습니다. T . T</p>
+                    <SearchImgTwo width="150" height="150" />
+                    <p>검색 결과가 없어요. T . T</p>
                 </div>
                 :
                 <div ref={scrollToContent} className={SearchStyles.content}>
