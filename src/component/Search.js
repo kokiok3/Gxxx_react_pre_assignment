@@ -1,6 +1,8 @@
 import {useState, useEffect, useRef} from "react";
 import {Link} from "react-router-dom";
 import SearchStyles from "./Search.module.css";
+import ScrollStyles from "./Scroll.module.css";
+import MovieListStyles from "./MovieList.module.css";
 import { ReactComponent as SearchImg} from "../asset/Search.svg";
 import { ReactComponent as BookmarkColoredImg} from "../asset/Bookmark_colored.svg";
 import Swal from "sweetalert2";
@@ -140,20 +142,20 @@ function Search(){
                 <div ref={scrollToContent} className={SearchStyles.content}>
                     {movies.map(v=> {
                         return(
-                        <div id={v.imdbID} onClick={()=>doBookMark(v.imdbID, v.Title)} key={v.imdbID} className={SearchStyles.li}>
-                            <div className={SearchStyles.mvImg} style={get_img(v.Poster)}></div>
-                            <div className={SearchStyles.mvInfo}>
-                                <span className={SearchStyles.mvFtStrong}>{v.Title}</span>
-                                <div className={SearchStyles.mvFtSmallGroup}>
-                                    <span className={SearchStyles.mvFtSmall}>{v.Year}</span>
-                                    <span className={SearchStyles.mvFtSmall}>{v.Type}</span>
+                        <div id={v.imdbID} onClick={()=>doBookMark(v.imdbID, v.Title)} key={v.imdbID} className={MovieListStyles.li}>
+                            <div className={MovieListStyles.mvImg} style={get_img(v.Poster)}></div>
+                            <div className={MovieListStyles.mvInfo}>
+                                <span className={MovieListStyles.mvFtStrong}>{v.Title}</span>
+                                <div className={MovieListStyles.mvFtSmallGroup}>
+                                    <span className={MovieListStyles.mvFtSmall}>{v.Year}</span>
+                                    <span className={MovieListStyles.mvFtSmall}>{v.Type}</span>
                                 </div>
                             </div>
                             {favList != null ?
                                 (favList.map((favListVal)=>{
                                     return((favListVal.Id == v.imdbID)?
                                         <div key={`${favListVal.Id}`}>
-                                            <BookmarkColoredImg className={SearchStyles.bookMark} width='45' height='45' fill='#008aff' />
+                                            <BookmarkColoredImg className={MovieListStyles.bookMark} width='45' height='45' fill='#008aff' />
                                         </div>
                                         :
                                         null)
