@@ -1,4 +1,5 @@
 import {useState, useEffect, useRef} from "react";
+import {Link} from "react-router-dom";
 import SearchStyles from "./Search.module.css";
 import { ReactComponent as SearchImg} from "../asset/Search.svg";
 import { ReactComponent as BookmarkColoredImg} from "../asset/Bookmark_colored.svg";
@@ -21,6 +22,7 @@ function Search(){
         setSearch(event.target.value);
     }
     const onClick = ()=>{
+        window.history.pushState(null, null, `#/${search}`);
         setSearchTemp(search);
         setBtn(true);
     }
