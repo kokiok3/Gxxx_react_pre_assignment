@@ -23,24 +23,26 @@ function Search(){
         setSearch(event.target.value);
     }
     const onClick = ()=>{
-        window.history.pushState(null, null, `#/s=${search}&page=1`);
+        // window.history.pushState(null, null, `#/s=${search}&page=1`);
         setSearchTemp(search);
         setBtn(true);
     }
     const onSubmit = (event)=>{
         event.preventDefault();
         setSearch("");
+        setPage(1);
     }
     const getMovie = async ()=>{
-        setMovies([]);
+        setMovies([]);;
         const json = await(await fetch(`https://www.omdbapi.com/?apikey=92e32667&s=${searchTemp}&page=${page}`)).json();
         setMovies(json.Search);
         setTotalPages(parseInt(json.totalResults));
     }
     const handlePageChange = (page)=> {
         setPage(page);
-        window.history.pushState(null, null, `#/s=${search}&page=${page}`);
+        // window.history.pushState(null, null, `#/s=${search}&page=${page}`);
         scrollToContent.current.scrollTop = 0;
+
     }
     useEffect(()=>{
         if(btn == true && search != ""){
@@ -65,17 +67,17 @@ function Search(){
         }
     }
     const [favList, setFavlist] = useState([]);
-    const doBookMark = (id, title)=>{
+    const doBookMark = (id, title, year, type, img)=>{
         const childLen = document.getElementById(id).childElementCount;
         if(childLen === 2){
-            addBookMark(id, title);
+            addBookMark(id, title, year, type, img);
         }
         else if(childLen === 3){
-            delBookMark(id, title);
+            delBookMark(id, title, year, type, img);
         }
     }
     const MySwal = withReactContent(Swal);
-    const addBookMark = (id, title)=>{
+    const addBookMark = (id, title, year, type, img)=>{
         MySwal.fire({
             width: 400,
             padding: '1rem',
@@ -91,12 +93,15 @@ function Search(){
                 const favObj = {
                     Id: id,
                     Title: title,
+                    Year: year,
+                    Type: type,
+                    Img: img,
                 }
                 favList != null ? setFavlist([favObj, ...favList]) : setFavlist([favObj]);
             }
         })
     }
-    const delBookMark = (id, title)=>{
+    const delBookMark = (id, title, year, type, img)=>{
         MySwal.fire({
             width: 400,
             padding: '1rem',
@@ -112,16 +117,22 @@ function Search(){
                 const favObj = {
                     Id: id,
                     Title: title,
+                    Year: year,
+                    Type: type,
+                    Img: img,
                 }
                 const rmFavList = favList.filter((v)=>{
+                    console.log("아이디 다른거", v.Id, id);
                     return v.Id !== id;
-                    console.log(v.Id, id);
                 });
                 setFavlist(rmFavList);
+                if(rmFavList.length === 0){
+                    localStorage.removeItem("Favorite");
+                }
             }
         })
     }
-    const saveLocal = (id)=>{
+    const saveLocal = ()=>{
         if(favList != null && favList.length != 0){
             localStorage.setItem("Favorite", JSON.stringify(favList));
         }
@@ -142,7 +153,7 @@ function Search(){
                 <div ref={scrollToContent} className={SearchStyles.content}>
                     {movies.map(v=> {
                         return(
-                        <div id={v.imdbID} onClick={()=>doBookMark(v.imdbID, v.Title)} key={v.imdbID} className={MovieListStyles.li}>
+                        <div id={v.imdbID} onClick={()=>doBookMark(v.imdbID, v.Title, v.Year, v.Type, v.Poster)} key={v.imdbID} className={MovieListStyles.li}>
                             <div className={MovieListStyles.mvImg} style={get_img(v.Poster)}></div>
                             <div className={MovieListStyles.mvInfo}>
                                 <span className={MovieListStyles.mvFtStrong}>{v.Title}</span>
