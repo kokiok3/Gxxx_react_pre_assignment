@@ -30,7 +30,7 @@ function BottomTab(){
 
     const tabClickHandler=(index)=>{
         const resultUrl = index === 0 ? "home" : "favorite";
-        window.history.pushState(null, null, `#/${resultUrl}`);
+        // window.history.pushState(null, null, `#/${resultUrl}`);
         setActiveIndex(index);
 
     }
